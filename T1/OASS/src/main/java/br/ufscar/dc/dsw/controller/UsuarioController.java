@@ -69,7 +69,7 @@ public class UsuarioController extends HttpServlet {
                 case "/CRUD":
                     lista(request, response);
                     break;
-                case "/UploadFile":
+                case "/uploadFile":
                     upload(request, response);
                     break;
             }
@@ -84,7 +84,7 @@ public class UsuarioController extends HttpServlet {
         System.out.println("O email do controller é" + email);
         String senha = request.getParameter("senha");
         Usuario usuario = dao.get(email, senha);
-        if ((usuario!=null)) {
+        if (email.equals(usuario.getEmail()) && senha.equals(usuario.getSenha())) {
             request.getSession().setAttribute("usuarioLogado", usuario);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/Usuarios/home.jsp");
             dispatcher.forward(request, response);
@@ -102,7 +102,8 @@ public class UsuarioController extends HttpServlet {
 
     private void upload(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/Usuarios/upload.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/Usuarios/listupload.jsp");
+        //System.out.println("passou na função upload");
         dispatcher.forward(request, response);
     }
 
@@ -156,7 +157,7 @@ public class UsuarioController extends HttpServlet {
         }
         dao.insert(usuario);
         if(papel.equals("PROFISSIONAL") || papel.equals("AMBOS")){
-            response.sendRedirect("UploadFile");    
+            response.sendRedirect("uploadFile");    
         }
         else{
             response.sendRedirect("CRUD");
