@@ -80,15 +80,16 @@ public class UsuarioController extends HttpServlet {
 
     private void validaLogin(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String email = request.getParameter("email");
+        String email = request.getParameter("login");
+        System.out.println("O email do controller é" + email);
         String senha = request.getParameter("senha");
         Usuario usuario = dao.get(email, senha);
-
-        if (usuario.getEmail() == email && usuario.getSenha() == senha){
+        if ((usuario!=null)) {
             request.getSession().setAttribute("usuarioLogado", usuario);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/Usuarios/home.jsp");
             dispatcher.forward(request, response);
-        } else {
+        } 
+        else {
             response.sendRedirect("/OASS/usuarios/login");
         }
     }
@@ -153,13 +154,12 @@ public class UsuarioController extends HttpServlet {
             String especialidade = request.getParameter("especialidade");
             usuario.setEspecialidade(especialidade);
         }
-
         dao.insert(usuario);
         if(papel.equals("PROFISSIONAL") || papel.equals("AMBOS")){
             response.sendRedirect("UploadFile");    
         }
         else{
-            response.sendRedirect("lista");
+            response.sendRedirect("CRUD");
         }
     }
 

@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+//import java.sql.Statement;
 
 public class UsuarioDAO extends GenericDAO {
 
@@ -91,18 +92,22 @@ public class UsuarioDAO extends GenericDAO {
 
     public Usuario get(String email, String senha) {
         Usuario usuario = null;
-        String sql = "SELECT * FROM Usuario WHERE email = ? AND senha = ?";
+        String sql = "SELECT * FROM Usuario WHERE  email = ? AND senha = ? ";
 
         try (Connection conn = this.getConnection();
-             PreparedStatement statement = conn.prepareStatement(sql)) {
-
+            PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setString(1, email);
             statement.setString(2, senha);
-            try (ResultSet resultSet = statement.executeQuery()) {
+            ResultSet resultSet = statement.executeQuery();
+
                 if (resultSet.next()) {
+
                     usuario = createUsuarioFromResultSet(resultSet);
                 }
-            }
+
+                resultSet.close();
+                statement.close();
+                conn.close();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -110,6 +115,7 @@ public class UsuarioDAO extends GenericDAO {
 
         return usuario;
     }
+
 
     private Usuario createUsuarioFromResultSet(ResultSet resultSet) throws SQLException {
         String nome = resultSet.getString("nome");
@@ -123,7 +129,8 @@ public class UsuarioDAO extends GenericDAO {
         java.sql.Date dataDeNascimento = resultSet.getDate("dataDeNascimento");
         String especialidade = resultSet.getString("especialidade");
 
-        if ("ADMIN".equals(papel)) {
+        if (papel.equals("ADMIN")) {
+            System.out.println("passa ou não passa");
             return new Usuario(nome, email, senha, CPF, papel);
         } else if ("CLIENTE".equals(papel)) {
             return new Usuario(nome, email, senha, CPF, papel, telefone, sexo, dataDeNascimento != null ? dataDeNascimento.toLocalDate() : null);

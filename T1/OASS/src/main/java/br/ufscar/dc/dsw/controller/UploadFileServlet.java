@@ -1,4 +1,4 @@
-package br.ufscar.dc.dsw;
+package br.ufscar.dc.dsw.controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +15,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import static br.ufscar.dc.dsw.Constants.*;
+import static br.ufscar.dc.dsw.controller.Constants.*;
 
 @WebServlet(name = "UploadFileServlet", urlPatterns = {"/UploadFile"})
 public class UploadFileServlet extends HttpServlet {
