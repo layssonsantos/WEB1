@@ -13,31 +13,37 @@
     <fmt:bundle basename="messages">
         <div align="center">
             <h1>Bem-vindo à Home</h1>
+            <% String papel = (String) request.getSession().getAttribute("papelDoUsuario"); %>
+            <% System.out.println(papel); %>
+            <% String admin = "ADMIN"; %>
+            <% String cliente = "CLIENTE"; %>
+            <% String profissional= "PROFISSIONAL"; %>
+            <% String ambos = "AMBOS"; %>
             <c:choose>
-                <c:when test="${usuario.papel == 'ADMIN'}">
+                <c:when test="${papelDoUsuario == 'ADMIN'}">
                     <h2>Admin</h2>
-                    <a href="${pageContext.request.contextPath}/usuarios/lista"><fmt:message key="link.crudUsuarios"/></a>
+                    <a href="${pageContext.request.contextPath}/usuarios/CRUD"><fmt:message key="Gerenciar Usuários"/></a>
                     <br>
-                    <a href="${pageContext.request.contextPath}/consultas/lista"><fmt:message key="link.crudConsultas"/></a>
+                    <a href="${pageContext.request.contextPath}/consultas/CRUD"><fmt:message key="Gerenciar Consultas"/></a>
                 </c:when>
-                <c:when test="${usuario.papel == 'CLIENTE'}">
+                <c:when test="${papelDoUsuario == 'CLIENTE'}">
                     <h2>Cliente</h2>
-                    <a href="${pageContext.request.contextPath}/profissionais"><fmt:message key="link.profissionais"/></a>
+                    <a href="${pageContext.request.contextPath}/profissionais"><fmt:message key="Profissionais Disponíveis"/></a>
                     <h3>Suas Consultas</h3>
                     <c:forEach var="consulta" items="${requestScope.listaConsultasCliente}">
                         <p>${consulta.data} - ${consulta.horario} - ${consulta.profissional}</p>
                     </c:forEach>
                 </c:when>
-                <c:when test="${usuario.papel == 'PROFISSIONAL'}">
+                <c:when test="${papelDoUsuario == 'PROFISSIONAL'}">
                     <h2>Profissional</h2>
                     <h3>Consultas Marcadas</h3>
                     <c:forEach var="consulta" items="${requestScope.listaConsultasProfissional}">
                         <p>${consulta.data} - ${consulta.horario} - ${consulta.cliente}</p>
                     </c:forEach>
                 </c:when>
-                <c:when test="${usuario.papel == 'AMBOS'}">
+                <c:when test="${papelDoUsuario == 'AMBOS'}">
                     <h2>Cliente e Profissional</h2>
-                    <a href="${pageContext.request.contextPath}/profissionais"><fmt:message key="link.profissionais"/></a>
+                    <a href="${pageContext.request.contextPath}/profissionais"><fmt:message key="Profissionais Disponíveis"/></a>
                     <h3>Suas Consultas como Cliente</h3>
                     <c:forEach var="consulta" items="${requestScope.listaConsultasCliente}">
                         <p>${consulta.data} - ${consulta.horario} - ${consulta.profissional}</p>

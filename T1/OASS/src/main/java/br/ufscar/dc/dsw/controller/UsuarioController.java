@@ -85,7 +85,7 @@ public class UsuarioController extends HttpServlet {
         String senha = request.getParameter("senha");
         Usuario usuario = dao.get(email, senha);
         if (email.equals(usuario.getEmail()) && senha.equals(usuario.getSenha())) {
-            request.getSession().setAttribute("usuarioLogado", usuario);
+            request.getSession().setAttribute("papelDoUsuario", usuario.getPapel());
             RequestDispatcher dispatcher = request.getRequestDispatcher("/Usuarios/home.jsp");
             dispatcher.forward(request, response);
         } 
